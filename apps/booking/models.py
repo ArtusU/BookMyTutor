@@ -1,6 +1,8 @@
 from django.db import models
-from datetime import datetime
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+
+from apps.userprofile.models import CustomUser
+
 
 # SERVICE_CHOICES = (
 #     ("Consultation", "Consultation"),
@@ -18,12 +20,12 @@ TIME_CHOICES = (
 
 
 class Appointment(models.Model):
-    tutor = models.ForeignKey(User, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    tutor = models.ForeignKey(CustomUser, related_name='tutor_appointments', on_delete=models.CASCADE)
     #type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default="Consultation")
-    booked = models.BooleanField(default=False)
     day = models.DateField(null=True, blank=True)
     time = models.CharField(max_length=10, choices=TIME_CHOICES, default="2 PM")
+    student = models.ForeignKey(CustomUser, related_name='student_appointments', on_delete=models.CASCADE, null=True, blank=True)
+    booked = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user.username} | day: {self.day} | time: {self.time}"
+        return f"{self.tutor} | day: {self.day} | time: {self.time}"
