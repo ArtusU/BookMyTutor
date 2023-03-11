@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Appointment
+
+
+def aval_slots(request):
+    slots = Appointment.objects.all()
+    context = {"slots": slots}
+    return render(request, "booking/slots.html", context)
