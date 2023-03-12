@@ -8,15 +8,15 @@ from .models import Appointment
 
 
 def aval_slots(request):
-    slots = Appointment.objects.all().filter(booked=False)
-    context = {"slots": slots}
-    return render(request, "booking/slots.html", context)
+    appointments = Appointment.objects.all().filter(booked=False)
+    context = {"appointments": appointments}
+    return render(request, "booking/appointments.html", context)
 
 
 def tutor(request, id):
     user = get_object_or_404(CustomUser, id=id)
-    slots = Appointment.objects.filter(tutor=user).order_by("day")
-    context = {"user": user, "slots": slots}
+    appointments = Appointment.objects.filter(tutor=user).order_by("date")
+    context = {"user": user, "appointments": appointments}
     return render(request, "booking/tutor.html", context)
 
 

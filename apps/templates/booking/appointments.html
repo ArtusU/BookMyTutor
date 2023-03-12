@@ -1,24 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if slots %}
+{% if appointments %}
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Tutor</th>
-            <th scope="col">Day</th>
-            <th scope="col">Time</th>
-            <th scope="col">Action</th>
+            <th scope="col">Date</th>
+            <th scope="col">Book</th>
         </tr>
     </thead>
     
-    {% for slot in slots %}
+    {% for appointment in appointments %}
     <tbody>
       <tr>
-        <th><a href="{% url 'booking:tutor' slot.tutor.id %}">{{slot.tutor}}</a></th>
-        <td>{{slot.day|date:"D, d M"}}</td>
-        <td>{{slot.time}}</td>
-        <td><a class="btn btn-primary" href="{% url 'booking:book-appointment' slot.id %}" role="button">Book</a></td>
+        <th><a href="{% url 'booking:tutor' appointment.tutor.id %}">{{appointment.tutor}}</a></th>
+        <td>{{appointment.date|date:"D, d M"}}</td>
+        <td><a class="btn btn-primary" href="{% url 'booking:book-appointment' appointment.id %}" role="button">{{appointment.slot}}</a></td>
       </tr>
     </tbody>
     {% endfor %}
@@ -28,8 +26,8 @@
 {% endif %}
 
 
-{% comment %} {% if slots %}
-{% for slot in slots %}
+{% comment %} {% if appointments %}
+{% for slot in appointments %}
 <div class="card text-center">
   <div class="card-header">
     {{slot.day|date:"D, d M"}}

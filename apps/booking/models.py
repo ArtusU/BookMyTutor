@@ -23,8 +23,8 @@ TIME_CHOICES = (
 class Appointment(models.Model):
     tutor = models.ForeignKey(CustomUser, related_name='tutor_appointments', on_delete=models.CASCADE)
     #type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default="Consultation")
-    day = models.DateField(null=True, blank=True)
-    time = models.CharField(max_length=10, choices=TIME_CHOICES, default="2 PM")
+    date = models.DateField(null=True, blank=True)
+    slot = models.CharField(max_length=10, choices=TIME_CHOICES, default="2 PM")
     student = models.ForeignKey(CustomUser, related_name='student_appointments', on_delete=models.CASCADE, null=True, blank=True)
     booked = models.BooleanField(default=False)
     

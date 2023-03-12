@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h4>List of tutor {{user|title}} available time slots for booking.</h4>
+<h4>Mr {{user|title}}</h4>
 
-{% if slots %}
+{% if appointments %}
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Day</th>
-            <th scope="col">Time</th>
-            <th scope="col"></th>
+            <th scope="col">Date</th>
+            <th scope="col">Book</th>
         </tr>
     </thead>
-    {% for slot in slots %}
+    {% for appointment in appointments %}
     <tbody>
       <tr>
-        <td>{{slot.day|date:"D, d M"}}</td>
-        <td>{{slot.time}}</td>
-        <td><a class="btn btn-primary" href="{% url 'booking:book-appointment' slot.id %}" role="button">Book</a></td>
+        <td>{{appointment.date|date:"l"}}</td>
+        <td>{{appointment.date|date:"d M"}}</td>
+        <td><a class="btn btn-primary" href="{% url 'booking:book-appointment' appointment.id %}" role="button">{{appointment.slot}}</a></td>
       </tr>
     </tbody>
     {% endfor %}
