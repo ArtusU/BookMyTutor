@@ -26,12 +26,20 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Available Tutors</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Schedule Appointment</a>
-              </li>
             </ul>
-            <button class="btn btn-outline-success mx-2" type="submit">Login</button>
-            <button class="btn btn-outline-success mx-2" type="submit">Signup</button>
+            <div class="navbar-nav">
+              {% if user.is_authenticated %}
+              {% if user.is_admin %}
+              <a class="btn btn-outline-success mx-2" href="#">Admin</a>
+              <a class="btn btn-outline-success mx-2" href="#">Schedule Appointment</a>
+              {% endif %}
+              <a class="btn btn-outline-success mx-2"href="#">Welcome: {{request.user}}</a>
+              <a class="btn btn-outline-success mx-2" href="{% url 'account_logout' %}">Sign Out</a>
+              {% else %}
+              <a class="btn btn-outline-success mx-2" href="{% url 'account_login' %}">Sign In</a>
+              <a class="btn btn-outline-success mx-2" href="{% url 'account_signup' %}">Sign Up</a>
+              {% endif %}
+          </div>
           </div>
         </div>
       </nav>
