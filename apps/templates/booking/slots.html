@@ -18,7 +18,7 @@
         <th><a href="{% url 'booking:tutor' slot.tutor.id %}">{{slot.tutor}}</a></th>
         <td>{{slot.day|date:"D, d M"}}</td>
         <td>{{slot.time}}</td>
-        <td><a class="btn btn-primary" href="#" role="button">Book</a></td>
+        <td><a class="btn btn-primary" href="{% url 'booking:book-appointment' slot.id %}" role="button">Book</a></td>
       </tr>
     </tbody>
     {% endfor %}

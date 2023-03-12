@@ -29,10 +29,12 @@
             </ul>
             <div class="navbar-nav">
               {% if user.is_authenticated %}
-              {% if user.is_admin %}
-              <a class="btn btn-outline-success mx-2" href="#">Admin</a>
-              <a class="btn btn-outline-success mx-2" href="#">Schedule Appointment</a>
-              {% endif %}
+                {% if user.is_admin %}
+                {% if user.is_tutor %}
+                <a class="btn btn-outline-success mx-2" href="#">Admin</a>
+                <a class="btn btn-outline-success mx-2" href="#">Schedule Appointment</a>
+                {% endif %}
+                {% endif %}
               <a class="btn btn-outline-success mx-2"href="#">Welcome: {{request.user}}</a>
               <a class="btn btn-outline-success mx-2" href="{% url 'account_logout' %}">Sign Out</a>
               {% else %}

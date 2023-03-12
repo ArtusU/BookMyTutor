@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
 <h4>List of tutor {{user|title}} available time slots for booking.</h4>
 
 {% if slots %}
@@ -10,7 +9,7 @@
         <tr>
             <th scope="col">Day</th>
             <th scope="col">Time</th>
-            <th scope="col">Action</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     {% for slot in slots %}
@@ -18,7 +17,7 @@
       <tr>
         <td>{{slot.day|date:"D, d M"}}</td>
         <td>{{slot.time}}</td>
-        <td><a class="btn btn-primary" href="#" role="button">Book</a></td>
+        <td><a class="btn btn-primary" href="{% url 'booking:book-appointment' slot.id %}" role="button">Book</a></td>
       </tr>
     </tbody>
     {% endfor %}
