@@ -14,14 +14,14 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">BMT | Book My Tutor</a>
+          <a class="navbar-brand" href="{% url 'about' %}">BMT | Book My Tutor</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Available Appointments</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'booking:aval_slots' %}">Available Appointments</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Available Tutors</a>
@@ -49,8 +49,8 @@
     {% endif %}
     
     <div class="container m-20">
-        {% block content %}
-        {% endblock content %}
+    {% block content %}
+    {% endblock content %}
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if slots %}
 <table class="table">
     <thead>
         <tr>
@@ -10,15 +11,42 @@
             <th scope="col">Action</th>
         </tr>
     </thead>
+    
     {% for slot in slots %}
     <tbody>
       <tr>
-        <th><a href="#">{{slot.tutor}}</a></th>
+        <th><a href="{% url 'booking:tutor' slot.tutor.id %}">{{slot.tutor}}</a></th>
         <td>{{slot.day|date:"D, d M"}}</td>
         <td>{{slot.time}}</td>
         <td><a class="btn btn-primary" href="#" role="button">Book</a></td>
       </tr>
     </tbody>
     {% endfor %}
-  </table>
+</table>
+{% else %}
+    <p>No available appointments. Sorry!</p>
+{% endif %}
+
+
+{% if slots %}
+{% for slot in slots %}
+<div class="card text-center">
+  <div class="card-header">
+    {{slot.day|date:"D, d M"}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Mr {{slot.tutor|title}}</h5>
+    <p class="card-text">Science</p>
+    {% comment %} {% for time in slot.time %} {% endcomment %}
+    <a href="#" class="btn btn-primary">{{slot.time}}</a>
+    {% comment %} {% endfor %} {% endcomment %}
+
+  </div>
+</div>
+{% endfor %}
+{% else %}
+    <p>No available appointments. Sorry!</p>
+{% endif %}
+
+
 {% endblock content %}
