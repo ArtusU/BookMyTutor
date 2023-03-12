@@ -24,7 +24,7 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'booking:aval_slots' %}">Available Appointments</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Available Tutors</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'booking:tutors' %}">Available Tutors</a>
               </li>
             </ul>
             <div class="navbar-nav">
@@ -53,7 +53,7 @@
     {% for message in messages %}
     <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
       {{ message }}
-      {% comment %} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> {% endcomment %}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
     {% endif %}

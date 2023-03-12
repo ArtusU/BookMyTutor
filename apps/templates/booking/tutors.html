@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% for tutor in tutors %}
+<div class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Mr {{tutor|title}}</h5>
+        <p class="card-text">Subject</p>
+        <a href="{% url 'booking:tutor' tutor.id %}" class="btn btn-primary">Check Appointments</a>
+    </div>
+</div>
+{% empty %}
+<p>No available Tutors. Sorry!</p>
+{% endfor %}
+
+{% endblock content %}

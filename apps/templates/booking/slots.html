@@ -28,7 +28,7 @@
 {% endif %}
 
 
-{% if slots %}
+{% comment %} {% if slots %}
 {% for slot in slots %}
 <div class="card text-center">
   <div class="card-header">
@@ -37,16 +37,15 @@
   <div class="card-body">
     <h5 class="card-title">Mr {{slot.tutor|title}}</h5>
     <p class="card-text">Science</p>
-    {% comment %} {% for time in slot.time %} {% endcomment %}
     <a href="#" class="btn btn-primary">{{slot.time}}</a>
-    {% comment %} {% endfor %} {% endcomment %}
-
   </div>
 </div>
 {% endfor %}
 {% else %}
     <p>No available appointments. Sorry!</p>
-{% endif %}
+{% endif %} 
+
+{% endcomment %}
 
 
 {% endblock content %}

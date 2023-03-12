@@ -20,6 +20,11 @@ def tutor(request, id):
     return render(request, "booking/tutor.html", context)
 
 
+class TutorsListView(generic.ListView):
+    queryset = CustomUser.objects.filter(is_tutor=True, tutor_appointments__isnull=False).distinct()
+    context_object_name = 'tutors'
+    template_name = 'booking/tutors.html'
+    
 
 class BookAppointment(LoginRequiredMixin, generic.View): 
     def get(self, request, *args, **kwargs):
@@ -29,3 +34,4 @@ class BookAppointment(LoginRequiredMixin, generic.View):
         booking.save()
         messages.success(request, 'You successfully booked an appointment.')
         return redirect("booking:aval_slots")
+    
