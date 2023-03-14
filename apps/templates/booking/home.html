@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% for day in days %}
+<div class="card text-center">
+    <div class="card-body">
+        <p class="card-text">{{day.date}}</p>
+        <h5 class="card-title">{{day.weekday}}</h5>
+        
+        {% for data in day.data %}
+        <h5 class="card-title">{{data.name}}</h5>
+
+        {% for slot in data.time_slots %}
+        <div class="card text-center">
+            <div class="card-body">
+                <a href="#" class="btn btn-primary">{{ slot }}</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+
+
+    </div>
+</div>
+{% empty %}
+<p>No available Tutors. Sorry!</p>
+{% endfor %}
+
+{% endblock content %}
+
+
