@@ -47,12 +47,12 @@ def daylist():
     return days_list
 
 
-def home(request):
+def week(request):
     context = {"days": daylist()}
     return render(request, "booking/home.html", context)
 
 
-def aval_slots(request):
+def appointments_list(request):
     appointments = Appointment.objects.all().filter(booked=False)
     context = {"appointments": appointments}
     return render(request, "booking/appointments.html", context)
