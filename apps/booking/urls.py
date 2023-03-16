@@ -1,15 +1,15 @@
 from django.urls import path
 
-from .views import appointments_list, tutor, week, BookAppointment, TutorsListView
+from .views import BookAppointment, student_block_view, tutor_dashboard
 
 app_name = "booking"
 
 urlpatterns = [
-    path("list/", appointments_list, name="appointments_list"),
-    path("", week, name="week"),
-    path("tutor/<int:id>/", tutor, name="tutor"),
-    path("tutors/", TutorsListView.as_view(), name="tutors"),
+    path("", student_block_view, name="student_block_view"),
+    path("dashboard/", tutor_dashboard, name="tutor_dashboard"),
     path(
-        "book-appointment/<int:pk>/", BookAppointment.as_view(), name="book-appointment"
+        "book-appointment/<int:appoint_id>/",
+        BookAppointment.as_view(),
+        name="book-appointment",
     ),
 ]

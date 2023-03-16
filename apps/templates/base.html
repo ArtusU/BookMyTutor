@@ -19,21 +19,14 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'booking:week' %}">Appointments</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'booking:tutors' %}">Tutors</a>
-              </li>
             </ul>
             <div class="navbar-nav">
               {% if user.is_authenticated %}
-                {% if user.is_admin %}
-                {% if user.is_tutor %}
-                <a class="btn btn-outline-primary mx-2" href="#">Admin</a>
-                <a class="btn btn-outline-primary mx-2" href="#">Schedule Appointment</a>
-                {% endif %}
-                {% endif %}
+              {% if user.is_tutor %}
+              <a class="btn btn-outline-primary mx-2" href="{% url 'booking:tutor_dashboard' %}">Schedule Appointment</a>
+              {% else %}
+              <a class="btn btn-outline-primary mx-2" href="{% url 'booking:student_block_view' %}">Check Appointments</a>
+              {% endif %}
               <a class="btn btn-outline-primary mx-2"href="#">Welcome: {{request.user}}</a>
               <a class="btn btn-outline-primary mx-2" href="{% url 'account_logout' %}">Sign Out</a>
               {% else %}

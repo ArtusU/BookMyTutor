@@ -1,17 +1,19 @@
 import datetime
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 
-from apps.userprofile.models import CustomUser
+from apps.userprofile.models import Student, Tutor
+
 from .models import Appointment
 
 
-def daylist():
-    days_list = []
+def daylist(tutor, booked):
     today = datetime.datetime.now()
     end_date = today + datetime.timedelta(days=14)
+    days_list = []
 
     for day_no in range(((end_date - today).days - 1)):
         days_data = {}
@@ -22,62 +24,58 @@ def daylist():
         days_data["date"] = curr_date.strftime("%Y-%m-%d")
         days_data["data"] = []
 
-        tutors = CustomUser.objects.filter(
-            is_tutor=True, tutor_appointments__date=curr_date
-        ).distinct()
-        if tutors:
-            for tutor in tutors:
-                tutor_data = {"name": tutor.username, "time_slots": []}
-                appoints_in_day_for_tutor = Appointment.objects.filter(
-                    tutor=tutor, booked=False, date=curr_date
-                )
-                if appoints_in_day_for_tutor:
-                    for appoint_in_day_for_tutor in appoints_in_day_for_tutor:
-                        appoint_id = appoint_in_day_for_tutor.id
-                        time_slot = appoint_in_day_for_tutor.slot
-                        if appoint_id not in tutor_data:
-                            tutor_data["appoint_id"] = appoint_id
-                        if time_slot not in tutor_data["time_slots"]:
-                            tutor_data["time_slots"].append(time_slot)
+        if tutor:
+            appoints = Appointment.objects.filter(
+                tutor=tutor, booked=booked, date=curr_date
+            )
+            if appoints:
+                for appoint in appoints:
+                    appoint_id = appoint.id
+                    appoint_slot = appoint.slot
+                    tutor_data = {}
+                    tutor_data["appoint_id"] = []
+                    tutor_data["appoint_slot"] = []
+                    if appoint_id not in tutor_data["appoint_id"]:
+                        tutor_data["appoint_id"] = appoint_id
+                    if appoint_slot not in tutor_data["appoint_slot"]:
+                        tutor_data["appoint_slot"] = appoint_slot
                     days_data["data"].append(tutor_data)
 
-            if weekday not in ["SATURDAY", "SUNDAY"]:
-                days_list.append(days_data)
+            if days_data["data"]:
+                if weekday not in ["SATURDAY", "SUNDAY"]:
+                    days_list.append(days_data)
     print(days_list)
     return days_list
 
 
-def week(request):
-    context = {"days": daylist()}
+@login_required
+def student_block_view(request):
+    user_student = request.user
+    student_obj = Student.objects.get(user=user_student)
+    tutor = student_obj.tutor
+    context = {"days": daylist(tutor=tutor, booked=False), "tutor": tutor}
     return render(request, "booking/home.html", context)
-
-
-def appointments_list(request):
-    appointments = Appointment.objects.all().filter(booked=False)
-    context = {"appointments": appointments}
-    return render(request, "booking/appointments.html", context)
-
-
-def tutor(request, id):
-    user = get_object_or_404(CustomUser, id=id)
-    appointments = Appointment.objects.filter(tutor=user).order_by("date")
-    context = {"user": user, "appointments": appointments}
-    return render(request, "booking/tutor.html", context)
-
-
-class TutorsListView(generic.ListView):
-    queryset = CustomUser.objects.filter(
-        is_tutor=True, tutor_appointments__isnull=False
-    ).distinct()
-    context_object_name = "tutors"
-    template_name = "booking/tutors.html"
 
 
 class BookAppointment(LoginRequiredMixin, generic.View):
     def get(self, request, *args, **kwargs):
-        booking = get_object_or_404(Appointment, id=kwargs["pk"])
-        booking.student = self.request.user
+        booking = get_object_or_404(Appointment, pk=kwargs["appoint_id"])
+        student = Student.objects.get(user=self.request.user)
+        booking.student = student
         booking.booked = True
         booking.save()
-        messages.success(request, "You successfully booked an appointment.")
-        return redirect("booking:aval_slots")
+        messages.success(
+            request,
+            "You have successfully booked an appointment for {} on {}".format(
+                booking.slot, booking.date
+            ),
+        )
+        return redirect("booking:student_block_view")
+
+
+@login_required
+def tutor_dashboard(request):
+    user_tutor = request.user
+    tutor = Tutor.objects.get(user=user_tutor)
+    context = {"days": daylist(tutor=tutor, booked=True)}
+    return render(request, "booking/tutor_dashboard.html", context)

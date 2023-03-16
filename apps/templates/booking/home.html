@@ -1,29 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% for day in days %}
 <div class="container p-3 mb-1">
     <div class="row text-center">
         <div class="card text-center p-1 m-1 shadow-lg">
-            <h5 class="card-title mt-2">{{day.weekday}} | {{day.date}}</h5>
+            <h4 class="card-title mt-2"> Mr {{tutor}}  </h4>
+            <h6 class="card-title mt-2"> {{tutor.department}} Department </h6>
             <div class="card-body">
-                {% for data in day.data %}
-                <div class="col">
-                    <div class="card mb-3 rounded-3 shadow-lg">
-                        <h5 class="card-title mt-2">Mr {{data.name}} </h5>
-                        {% for slot in data.time_slots %}
-                        <a href="#" class="btn btn-primary shadow-lg m-2">Book {{ slot }}</a>
+            {% for day in days %}
+
+            <div class="col">
+                <div class="card mb-3 rounded-3 shadow-lg">
+                        <h5 class="card-title mt-2">{{day.weekday}} | {{day.date}} </h5>
+                        {% for data in day.data %}
+                        <a href="{% url 'booking:book-appointment' data.appoint_id %}" class="btn btn-primary shadow-lg m-2">Book {{ data.appoint_slot }}</a>
                         {% endfor %}
                     </div>
                 </div>
+                {% empty %}
+                <h6>Your tutor {{tutor}} is not available now. Try again tomorrow. Sorry.</h6>
                 {% endfor %}
             </div>
         </div>
     </div>
 </div>
-{% empty %}
-<p>No available tutors. Sorry!</p>
-{% endfor %}
+
 
 
 {% endblock content %}
