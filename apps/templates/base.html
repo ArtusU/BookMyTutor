@@ -24,7 +24,9 @@
               {% if user.is_authenticated %}
               {% if user.is_tutor %}
               <a class="btn btn-outline-primary mx-2" href="{% url 'booking:tutor_dashboard' %}">Schedule Appointment</a>
+              <a class="btn btn-outline-primary mx-2" href="{% url 'booking:appointment_list' %}">Appointments List</a>
               {% else %}
+              <a class="btn btn-outline-primary mx-2" href="{% url 'booking:booking_list' %}">Booking List</a>
               <a class="btn btn-outline-primary mx-2" href="{% url 'booking:student_block_view' %}">Check Appointments</a>
               {% endif %}
               <a class="btn btn-outline-primary mx-2"href="#">Welcome: {{request.user}}</a>

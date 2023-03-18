@@ -5,18 +5,13 @@ from django.urls import reverse
 from apps.userprofile.models import Tutor, Student
 
 
-# SERVICE_CHOICES = (
-#     ("Consultation", "Consultation"),
-#     ("Mentoring", "Mentoring"),
-# )
-
 TIME_CHOICES = (
     ("10 am", "10 am"),
     ("11 am", "11 am"),
-    ("12 am", "12 am"),
-    ("14 am", "14 am"),
-    ("15 am", "15 am"),
-    ("16 am", "16 am"),
+    ("12 pm", "12 pm"),
+    ("2 pm", "2 pm"),
+    ("3 pm", "3 pm"),
+    ("4 pm", "4 pm"),
 )
 
 

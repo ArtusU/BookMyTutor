@@ -1,53 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% comment %} <div class="container p-3 mb-1">
-    <div class="row text-center">
-        <div class="card text-center p-1 m-1 shadow-lg">
-            <h4 class="card-title mt-2"> Mr {{tutor}}  </h4>
-            <h6 class="card-title mt-2"> {{tutor.department}} Department </h6>
-            <div class="card-body">
-            {% for day in days %}
-
-            <div class="col">
-                <div class="card mb-3 rounded-3 shadow-lg">
-                        <h5 class="card-title mt-2">{{day.weekday}} | {{day.date}} </h5>
-                        {% for data in day.data %}
-                        <a href="{% url 'booking:book-appointment' data.appoint_id %}" class="btn btn-primary shadow-lg m-2">Book {{ data.appoint_slot }}</a>
-                        {% endfor %}
-                    </div>
+<div class="row row-cols-1 row-cols-md-5 mt-3 text-center">
+    {% for day in days %}
+    <div class="col">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-primary border-primary">
+                    <a href="{% url 'booking:create_appointments' day.date %}" class="btn btn-lg btn-outline-light shadow-lg mb-2"><h4 class="my-0 fw-normal">{{ day.weekday }}</h4>
+                    <h5 class="card-title pricing-card-title">{{ day.date }}<small class="text-muted fw-light"></small></h5>
+                    </a>
                 </div>
-                {% empty %}
-                <h6>Your tutor {{tutor}} is not available now. Try again tomorrow. Sorry.</h6>
-                {% endfor %}
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                    {% for data in day.data %}
+                        {% if data.appoint_booked %}
+                        <a href="{% url 'booking:delete_appointment' day.date data.appoint_slot %}" class="btn btn-md d-grid btn-success shadow-lg mb-2">Booked {{ data.appoint_slot }}</a>
+                        {% else %}
+                        <a href="{% url 'booking:delete_appointment' day.date data.appoint_slot %}" class="btn btn-sd d-grid btn-outline-secondary shadow-lg mb-2">{{ data.appoint_slot }}</a>
+                        {% endif %}
+
+                    {% empty %}
+                    <h6>You have not scheduled any appointment for this day.</h6>
+                    {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div> {% endcomment %}
-
-
-<div class="row row-cols-1 row-cols-md-5 mt-3 text-center">
-    <div class="col">
-<div class="col">
-    <div class="card mb-4 rounded-3 shadow-sm border-primary">
-      <div class="card-header py-3 text-white bg-primary border-primary">
-        <h4 class="my-0 fw-normal">Monday</h4>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title pricing-card-title">27-03-23<small class="text-muted fw-light"></small></h5>
-        <ul class="list-unstyled mt-3 mb-4">
-        </ul>
-        <a href="#" class="btn btn-lg btn-primary shadow-lg mb-2">Available 10 am</a>
-        <a href="#" class="btn btn-lg btn-primary shadow-lg mb-2">Available 11 am</a>
-        <a href="#" class="btn btn-lg btn-primary shadow-lg mb-2">Available 12 pm</a>
-        <a href="#" class="btn btn-lg btn-primary shadow-lg mb-2">Available  2 pm</a>
-        <a href="#" class="btn btn-lg btn-primary shadow-lg mb-2">Available  3 pm</a>
-        <a href="#" class="btn btn-lg btn-primary shadow-lg mb-2">Available  4 pm</a>
-      </div>
-    </div>
-  </div>
-  </div>
-  </div>
+    {% endfor %}
 </div>
 
 

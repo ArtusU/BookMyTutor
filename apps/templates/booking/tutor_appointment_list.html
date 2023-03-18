@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="row row-cols-1 row-cols-md-5 mt-3 text-center">
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Student</th>
+                <th scope="col">Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+          <tr>
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.slot }}</td>
+            <td>{{ appointment.student.user.username }}</td>
+            <td>{{ appointment.student.department }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+</div>
+
+
+{% endblock content %}
+
+
