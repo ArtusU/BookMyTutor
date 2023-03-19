@@ -8,5 +8,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     path("booking/", include("apps.booking.urls")),
-    path('accounts/', include('allauth.urls')),  
+    path('accounts/', include('allauth.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]

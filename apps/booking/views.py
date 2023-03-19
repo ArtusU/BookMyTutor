@@ -196,6 +196,7 @@ def tutdaylist(tutor):
     return days_list
 
 
+@login_required
 def create_appoints_day(request, date):
     slots = ["10 am", "11 am", "12 pm", "14 pm", "15 pm", "16 pm"]
     user_tutor = request.user
@@ -215,6 +216,7 @@ def tutor_dashboard(request):
     return render(request, "booking/tutor_dashboard.html", context)
 
 
+@login_required
 def delete_appointment(request, date, slot):
     user_tutor = request.user
     tutor = Tutor.objects.get(user=user_tutor)

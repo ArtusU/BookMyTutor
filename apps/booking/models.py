@@ -17,7 +17,6 @@ TIME_CHOICES = (
 
 class Appointment(models.Model):
     tutor = models.ForeignKey(Tutor, related_name='tutor_appointments', on_delete=models.CASCADE)
-    #type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default="Consultation")
     date = models.DateField(null=True, blank=True)
     slot = models.CharField(max_length=10, choices=TIME_CHOICES, null=True, blank=True)
     student = models.ForeignKey(Student, related_name='student_appointments', on_delete=models.CASCADE, null=True, blank=True)
@@ -30,10 +29,6 @@ class Appointment(models.Model):
     def __str__(self):
         return f"{self.tutor} | date: {self.date} | slot: {self.slot} | student: {self.student} -> {self.booked}"
     
-    def get_absolute_url(self):
-        # returns a complete url string and let view handle the redirect
-        return reverse("session-detail", kwargs={"pk": self.pk})
-
 
 
 # class Session(models.Model):
