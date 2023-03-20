@@ -14,16 +14,16 @@
             </tr>
         </thead>
         <tbody>
+            {% for booking in bookings %}
             <tr>
-                {% for booking in bookings %}
                 <td>{{ booking.date }}</td>
                 <td>{{ booking.slot }}</td>
                 <td>{{ booking.tutor.user.username }}</td>
                 <td>
                     <a href="{% url 'booking:cancel_appointment' booking.id %}" class="btn btn-sm btn-danger shadow-lg mb-2">Cancel Appointment</a>
                 </td>
-                {% endfor %}
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

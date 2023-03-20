@@ -2,6 +2,7 @@ import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 
@@ -34,13 +35,13 @@ def daylist(tutor, booked):
     },
     ]
     """
-    today = datetime.datetime.now()
-    end_date = today + datetime.timedelta(days=14)
+    tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
+    end_date = tomorrow + datetime.timedelta(days=15)
     days_list = []
 
-    for day_no in range(((end_date - today).days - 1)):
+    for day_no in range(((end_date - tomorrow).days)):
         days_data = {}
-        curr_date = today + datetime.timedelta(days=day_no)
+        curr_date = tomorrow + datetime.timedelta(days=day_no)
         weekday = curr_date.strftime("%A").upper()
 
         days_data["weekday"] = weekday
@@ -64,10 +65,11 @@ def daylist(tutor, booked):
                         tutor_data["appoint_slot"] = appoint_slot
                     days_data["data"].append(tutor_data)
 
-            if days_data["data"]:
+            # if days_data["data"]:
                 if weekday not in ["SATURDAY", "SUNDAY"]:
+                    days_data["data"] = sorted(days_data["data"], key=lambda k: k["appoint_slot"])
                     days_list.append(days_data)
-    # print(days_list)
+    #print(days_list)
     return days_list
 
 
@@ -77,6 +79,7 @@ def student_block_view(request):
     student_obj = Student.objects.get(user=user_student)
     tutor = student_obj.tutor
     context = {"days": daylist(tutor=tutor, booked=False), "tutor": tutor}
+    print(context)
     return render(request, "booking/home.html", context)
 
 
@@ -86,13 +89,20 @@ class BookAppointment(LoginRequiredMixin, generic.View):
         student = Student.objects.get(user=self.request.user)
         booking.student = student
         booking.booked = True
-        booking.save()
-        messages.success(
-            request,
-            "You have successfully booked an appointment for {} on {}".format(
-                booking.slot, booking.date
-            ),
-        )
+        try:
+            booking.save()
+            messages.success(
+                self.request,
+                "You have successfully booked an appointment for {} on {}".format(
+                    booking.slot, booking.date
+                ),
+            )
+        except IntegrityError:
+            messages.warning(
+                self.request,
+                "You can only book one appointment at a time. If you wish to book a new appointment, please go to your booking and cancel your current appointment and try booking again."
+                ),
+            return redirect("booking:student_block_view")  
         return redirect("booking:student_block_view")
 
 
@@ -103,7 +113,7 @@ class StudentBookingList(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         user = self.request.user
         student = Student.objects.get(user=user)
-        queryset = Appointment.objects.filter(student=student, booked=True)
+        queryset = Appointment.objects.filter(student=student, booked=True).order_by('date')
         return queryset
 
 
@@ -157,10 +167,10 @@ def tutdaylist(tutor):
     ]
     """
     today = datetime.datetime.now()
-    end_date = today + datetime.timedelta(days=15)
+    end_date = today + datetime.timedelta(days=14)
     days_list = []
 
-    for day_no in range(((end_date - today).days - 1)):
+    for day_no in range(((end_date - today).days)):
         days_data = {}
         curr_date = today + datetime.timedelta(days=day_no)
         weekday = curr_date.strftime("%A").upper()
@@ -238,5 +248,4 @@ class TutorAppointmentList(LoginRequiredMixin, generic.ListView):
         user = self.request.user
         tutor = Tutor.objects.get(user=user)
         queryset = Appointment.objects.filter(tutor=tutor, booked=True)
-        print(queryset)
         return queryset

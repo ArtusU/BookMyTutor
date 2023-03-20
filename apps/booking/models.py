@@ -22,6 +22,9 @@ class Appointment(models.Model):
     student = models.ForeignKey(Student, related_name='student_appointments', on_delete=models.CASCADE, null=True, blank=True)
     booked = models.BooleanField(default=False)
     
+    class Meta:
+        unique_together = ('student', 'booked')
+    
     @property
     def get_weekday(self):
         return self.day.strftime("%A")

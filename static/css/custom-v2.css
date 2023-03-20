@@ -1,0 +1,6 @@
+/* Set the background color and text color for messages.info */
+.messages .warning {
+    background-color: #f44336;
+    color: #fff;
+  }
+  
