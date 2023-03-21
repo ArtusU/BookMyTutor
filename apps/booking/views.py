@@ -11,7 +11,7 @@ from apps.userprofile.models import Student, Tutor
 from .models import Appointment
 
 
-def daylist(tutor, booked):
+def daylist(tutor):
     """
     Returns:
     [
@@ -50,7 +50,7 @@ def daylist(tutor, booked):
 
         if tutor:
             appoints = Appointment.objects.filter(
-                tutor=tutor, booked=booked, date=curr_date
+                tutor=tutor, date=curr_date
             )
             if appoints:
                 for appoint in appoints:
@@ -65,7 +65,6 @@ def daylist(tutor, booked):
                         tutor_data["appoint_slot"] = appoint_slot
                     days_data["data"].append(tutor_data)
 
-            # if days_data["data"]:
                 if weekday not in ["SATURDAY", "SUNDAY"]:
                     days_data["data"] = sorted(days_data["data"], key=lambda k: k["appoint_slot"])
                     days_list.append(days_data)
@@ -78,7 +77,7 @@ def student_block_view(request):
     user_student = request.user
     student_obj = Student.objects.get(user=user_student)
     tutor = student_obj.tutor
-    context = {"days": daylist(tutor=tutor, booked=False), "tutor": tutor}
+    context = {"days": daylist(tutor=tutor), "tutor": tutor}
     print(context)
     return render(request, "booking/home.html", context)
 
