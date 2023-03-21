@@ -1,15 +1,49 @@
 from django.urls import path
 
-from .views import appointments_list, tutor, week, BookAppointment, TutorsListView
+from .views import (
+    TutorAppointmentList,
+    BookAppointment,
+    CancelAppointment,
+    StudentBookingList,
+    student_block_view,
+    tutor_dashboard,
+    create_appoints_day,
+    delete_appointment,
+)
 
 app_name = "booking"
 
 urlpatterns = [
-    path("list/", appointments_list, name="appointments_list"),
-    path("", week, name="week"),
-    path("tutor/<int:id>/", tutor, name="tutor"),
-    path("tutors/", TutorsListView.as_view(), name="tutors"),
+    # Student
+    path("", student_block_view, name="student_block_view"),
     path(
-        "book-appointment/<int:pk>/", BookAppointment.as_view(), name="book-appointment"
+        "book_appointment/<int:appoint_id>/",
+        BookAppointment.as_view(),
+        name="book_appointment",
+    ),
+    path(
+        "cancel_appointment/<int:booking_id>/",
+        CancelAppointment.as_view(),
+        name="cancel_appointment",
+    ),
+    path(
+        "booking_list/",
+        StudentBookingList.as_view(),
+        name="booking_list",
+    ),
+    # Tutor
+    path("dashboard/", tutor_dashboard, name="tutor_dashboard"),
+    path(
+        "dashboard/appointment_list/",
+        TutorAppointmentList.as_view(),
+        name="appointment_list",
+    ),
+    path(
+        "create/appointments/<date>/", create_appoints_day, name="create_appointments"
+    ),
+    path(
+        "delete/appointments/<date>/<slot>/",
+        delete_appointment,
+        name="delete_appointment",
     ),
 ]

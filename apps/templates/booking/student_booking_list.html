@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if bookings %}
+<div class="row row-cols-1 row-cols-md-5 mt-3 text-center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Tutor</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.slot }}</td>
+                <td>{{ booking.tutor.user.username }}</td>
+                <td>
+                    <a href="{% url 'booking:cancel_appointment' booking.id %}" class="btn btn-sm btn-danger shadow-lg mb-2">Cancel Appointment</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h4 class="display-5 fw-bold">You haven't booked an appointment yet.</h4>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock content %}
+
+
